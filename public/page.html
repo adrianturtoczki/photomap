@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>photomap /pageview/</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+<body>
+    <p><a href="https://dev.adrianturtoczki.com/">Switch to map view</a></p>
+    <p><a href="https://dev.adrianturtoczki.com/listview">Click here to go back to the list view</a></p>
+
+    <div id="markerdiv">
+
+    </div>
+
+    <form action="/post-photo" method="post" enctype="multipart/form-data">
+        <input type="file" accept="image/*" name="photo" />
+        <input type="hidden" id="marker" name="marker">
+        <input type="submit" value="upload">
+      </form>
+
+    <script type="module" src="/js/scriptpageview.js">   
+    </script>
+
+</body>
+</html>
