@@ -1,19 +1,26 @@
 import {loadImages} from './util.js';
 
-let markers = {};
+let promise1 = fetch('/get-markers').then(response=>response.json());
+let promise2 = fetch('/api/user-data').then(response=>response.json());
 
+Promise.all([promise1,promise2]).then(data=>{
+    const markers = JSON.parse(data[0]);
+    const userdata = data[1];
+    createMarkers(markers);
+    setLoginstatus(userdata.username,document.querySelector('#loginstatus'));
+    console.log("finished loading both fetches:",markers,"\n",userdata);
+})
 
-const request = async() => {
-    const response = await fetch('https://dev.adrianturtoczki.com/get-markers');
-    const json = await response.json();
-    markers = JSON.parse(json);
-    //console.log(markers[markers.length-1].id+1);
-    createMarkers();
+function setLoginstatus(user,loginstatus){
+    console.log(user);
+    if (Object.keys(user).length==0){
+        loginstatus.innerHTML="<a href='/login-page'>Login</a> <a href='/signup-page'>Sign up</a>";
+    } else {
+        loginstatus.innerHTML="Welcome "+user+". Click <a href='/logout'>here</a> to log out";
+    }
 }
 
-request();
-
-function createMarkers(){
+function createMarkers(markers){
 
   const markerdiv = document.querySelector('#markerdiv');
 

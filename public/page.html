@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 </head>
 <body>
+  <p id="loginstatus"></p>
     <p><a href="https://dev.adrianturtoczki.com/">Switch to map view</a></p>
     <p><a href="https://dev.adrianturtoczki.com/listview">Click here to go back to the list view</a></p>
 
@@ -17,6 +18,36 @@
         <input type="file" accept="image/*" name="photo" />
         <input type="hidden" id="marker" name="marker">
         <input type="submit" value="upload">
+      </form>
+
+      <form action="/post-ratings" method="post">
+        <p>Your rating:</p>
+        <div>
+          <input type="radio" id="ratingChoice1"
+           name="rating" value="1">
+          <label for="rating1">1</label>
+      
+          <input type="radio" id="ratingChoice2"
+           name="rating" value="2">
+          <label for="rating2">2</label>
+      
+          <input type="radio" id="ratingChoice3"
+           name="rating" value="3">
+          <label for="rating3">3</label>
+      
+          <input type="radio" id="ratingChoice2"
+           name="rating" value="4">
+          <label for="rating4">4</label>
+      
+          <input type="radio" id="ratingChoice3"
+           name="rating" value="5">
+          <label for="rating5">5</label>
+
+          <input type="hidden" id="marker2" name="marker">
+        </div>
+        <div>
+          <button type="submit">Submit</button>
+        </div>
       </form>
 
     <script type="module" src="/js/scriptpageview.js">   

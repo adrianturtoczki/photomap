@@ -1,18 +1,29 @@
-let markers = {};
+let promise1 = fetch('/get-markers').then(response=>response.json());
+let promise2 = fetch('/api/user-data').then(response=>response.json());
 
-const request = async() => {
-    const response = await fetch('https://dev.adrianturtoczki.com/get-markers');
-    const json = await response.json();
-    markers = JSON.parse(json);
-    //console.log(markers[markers.length-1].id+1);
-    loadMap();
+Promise.all([promise1,promise2]).then(data=>{
+    const markers = JSON.parse(data[0]);
+    const userdata = data[1];
+
+    console.log(data);
+    setLoginstatus(userdata.username,document.querySelector('#loginstatus'));
+
+    loadMap(markers);
+    console.log("finished loading both fetches:",markers,"\n",userdata);
+})
+
+function setLoginstatus(user,loginstatus){
+    console.log(user);
+    if (Object.keys(user).length==0){
+        loginstatus.innerHTML="<a href='/login-page'>Login</a> <a href='/signup-page'>Sign up</a>";
+    } else {
+        loginstatus.innerHTML="Welcome "+user+". Click <a href='/logout'>here</a> to log out";
+    }
 }
-
-request();
 
 let map = L.map('map').setView([47.4874728,19.0474751], 8);
 
-function loadMap(){
+function loadMap(markers){
 
     mapLink = 
         '<a href="https://openstreetmap.org">OpenStreetMap</a>';
@@ -35,11 +46,13 @@ function loadMap(){
 }
 
     map.on('click', function(e) {
+        console.log("test");
+        console.log(user.user);
         if (confirm("Do you want to place a marker here?")){
             let name = prompt("name of marker");
             let description = prompt("description of marker");
 
-
+            console.log(user);
             const data_to_send = {id:markers[markers.length-1].id+1,name:name,description:description,lat:e.latlng.lat,lng:e.latlng.lng};
 
             console.log(data_to_send);
@@ -66,7 +79,7 @@ function loadMap(){
 
             //console.log(data_to_send);
 
-            fetch('https://dev.adrianturtoczki.com/delete-marker',{
+            fetch('/delete-marker',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -90,7 +103,7 @@ function loadMap(){
             console.log(data_to_send);
 
             if ((modify_type=="name"||modify_type=="description"||modify_type=="lat"||modify_type=="lon")&&modify_to!=""){
-                fetch('https://dev.adrianturtoczki.com/modify-marker',{
+                fetch('/modify-marker',{
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
