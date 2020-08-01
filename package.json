@@ -1,5 +1,5 @@
 {
-  "name": "dev",
+  "name": "photomap",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,15 +7,18 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Adrian Turtoczki",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
-    "passport": "^0.4.1"
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
