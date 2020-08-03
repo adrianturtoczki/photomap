@@ -1,7 +1,7 @@
 export function loadImages(id,imagediv){
     //load images test
   
-    fetch('https://dev.adrianturtoczki.com/get-photos')
+    fetch('/get-photos')
   .then(
     function(response) {
       response.json().then(function(data) {

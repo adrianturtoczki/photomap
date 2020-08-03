@@ -38,7 +38,7 @@ function createMarkers(markers){
         p.innerHTML = markers[i].description;
 
         let a = document.createElement("a");
-        a.href = "https://dev.adrianturtoczki.com/id?id="+markers[i].id;
+        a.href = "/id?id="+markers[i].id;
         a.textContent = "link";
 
         

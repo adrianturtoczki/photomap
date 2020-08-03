@@ -31,7 +31,7 @@ con.query('SELECT * FROM markers',(err,rows)=>{
 const express = require('express');
 const bodyparser = require('body-parser');
 const app = express();
-const port = 3000;
+const port = process.env.EXPRESS_PORT;
 
 app.use(express.static(__dirname+'/public'));
 app.listen(port, () => console.log(`app listening at http://localhost:${port}`));
