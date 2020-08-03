@@ -51,8 +51,8 @@ function loadMap(markers,user){
             marker = new L.marker([markers[i].lat,markers[i].lon])
                 .bindPopup(
                     "<p>"+markers[i].name+"</p>"+"<p>"+markers[i].description+"</p>"+
-                    "<button class='delete_button' name='"+markers[i].id+"'>delete</button>"+"<br>"+
-                    "<button class='modify_button' name='"+markers[i].id+"'>modify</button><br>"+
+                    "<button class='delete_button' name='"+i+"'>delete</button>"+"<br>"+
+                    "<button class='modify_button' name='"+i+"'>modify</button><br>"+
                     "<a href='/id?id="+markers[i].id+"'>link</a>")
                 .addTo(map);
         } else {
@@ -85,6 +85,7 @@ function loadMap(markers,user){
                         body: JSON.stringify(data_to_send)
                         }).then(response=>{
                         console.log(response);
+                        window.location.reload();
                         }).catch(error=>console.error(error));
     }
 });
@@ -92,12 +93,12 @@ function loadMap(markers,user){
     map.on('popupopen',function(){
         const delete_button = document.querySelector('.delete_button');
         console.log("check if delete exists:"+delete_button);
-        if (delete_button&&delete_button.getAttribute("name")==user.id){
+        if (delete_button&&markers[delete_button.getAttribute("name")].user==user.id){
+            let current_marker = markers[delete_button.getAttribute("name")];
             delete_button.addEventListener('click', function(e) {
-                e.preventDefault();
-                console.log('button '+delete_button.getAttribute("name")+' was clicked');
+                console.log('button '+current_marker.id+' was clicked');
     
-                const data_to_send = {id:delete_button.getAttribute("name")};
+                const data_to_send = {id:current_marker.id};
     
                 //console.log(data_to_send);
     
@@ -109,16 +110,17 @@ function loadMap(markers,user){
                     body: JSON.stringify(data_to_send)
                     }).then(response=>{
                     console.log(response);
+                    window.location.reload();
                     }).catch(error=>console.error(error));
+                }, {passive:true});
     
                     const modify_button = document.querySelector('.modify_button');
-                    modify_button.addEventListener('click', function(e) {
+                    modify_button.addEventListener('click',function(e) {
                         let modify_type = prompt("write 'name' to modify name, 'description' to modify description, 'lat' to modify latitude, 'lon' to modify longitude");
                         let modify_to = prompt("What do you want to modify it to?");
-                        e.preventDefault();
                         console.log('button '+modify_button.getAttribute("name")+' was clicked');
             
-                        const data_to_send = {modify_type:modify_type,modify_to:modify_to,id:modify_button.getAttribute("name")};
+                        const data_to_send = {modify_type:modify_type,modify_to:modify_to,id:current_marker.id};
             
                         console.log(data_to_send);
             
@@ -131,12 +133,12 @@ function loadMap(markers,user){
                                 body: JSON.stringify(data_to_send)
                                 }).then(response=>{
                                 console.log(response);
+                                window.location.reload();
                                 }).catch(error=>console.error(error));
                         } else {
                             console.log("Error: wrong modify_type or empty modify_to")
                         }
-                    });
-            });
+                    }, {passive:true});
         }
     
     });
