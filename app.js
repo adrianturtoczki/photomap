@@ -22,7 +22,6 @@ let markers = [];
 
 con.query('SELECT * FROM markers',(err,rows)=>{
     if(err) throw err;
-    //console.log(rows);
     markers = rows;
 })
 
@@ -83,13 +82,8 @@ passport.use('signup',new LocalStrategy({
   function(req,username, password, done) {
       console.log("passport signup..");
       console.log(username);
-      console.log(password);
-      console.log("users:");
-
       let exists = false;
       con.query("select username from users",function(err,rows){	
-          console.log("select");
-        console.log(rows);
         for (let i = 0; i < rows.length;i++){
             if (rows[i].username==username){
                 exists=true;
@@ -117,10 +111,6 @@ passport.use('login',new LocalStrategy({
             con.query("SELECT * FROM users WHERE username="+con.escape(username),(err,rows)=>{
                 if(err) throw err;
                 let accepted_pw = bcrypt.compareSync(password,rows[0].password.toString());
-                console.log(password,rows[0].password.toString());
-                console.log("select result: ",accepted_pw);
-
-                console.log(accepted_pw);
                 if (accepted_pw){
                     console.log("good password");
                     return done(null,username);
@@ -235,7 +225,6 @@ app.post('/post-photo', upload.single('photo') , function (req, res, next) {
   })
 
 app.get('/get-photos', function(req,res){
-    //console.log("get photos");
     con.query('SELECT * FROM photos',(err,rows)=>{
         if(err) throw err;
         res.json(JSON.stringify(rows));
@@ -251,7 +240,6 @@ app.get('/id', (req, res) => {
 app.get('/get-ratings', async (req,res)=>{
     con.query('SELECT * FROM ratings',(err,rows)=>{
         if(err) throw err;
-        //console.log(rows);
         res.json(JSON.stringify(rows));
     })
 });
@@ -259,11 +247,8 @@ app.get('/get-ratings', async (req,res)=>{
 app.post('/post-ratings', async (req,res)=>{
     
     if (req.body.rating>=1&&req.body.rating<=5&&req.user!=null){
-        console.log(req.user.id);
-        console.log(req.user.username);
         con.query('INSERT INTO ratings(marker, user,rating) VALUES ('+con.escape(req.body.marker)+','+req.user.id+','+req.body.rating+')',(err,rows)=>{
             if(err) throw err;
-            //console.log(rows);
         })
     }
     
@@ -278,7 +263,6 @@ app.use(function (req, res, next) {
 function update_markers(){
     con.query('SELECT * FROM markers',(err,rows)=>{
         if(err) throw err;
-        //console.log(rows);
         markers = rows;
     })
 }
